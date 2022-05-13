@@ -1,7 +1,7 @@
 ## api 資料夾
-- index.js
+- index.js(測試中)
   - axios封裝
-- todos.js
+- todos.js(測試中)
   - todos相關 api 封裝
 
 ## plugins 資料夾
