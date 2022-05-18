@@ -3,7 +3,7 @@ export default {
     host: '0.0.0.0'
   },
   head: {
-    title: 'graphql-nuxt',
+    title: 'Axios GraphQL Example',
     htmlAttrs: {
       lang: 'zh-TW'
     },

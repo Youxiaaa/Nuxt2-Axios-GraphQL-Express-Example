@@ -1,6 +1,6 @@
 <template>
   <section class="w-full min-h-screen flex flex-col items-center justify-center">
-    <button @click="$router.push('/')" class="p-4 bg-gradient-to-tr from-pink-300 to-purple-300 text-white rounded-lg mb-4">to prev page</button>
+    <button @click="$router.go(-1)" class="p-4 bg-gradient-to-tr from-pink-300 to-purple-300 text-white rounded-lg mb-4">to prev page</button>
     <div class="bg-white p-4 rounded-lg shadow-md flex items-center gap-4 border border-[#bebebe]">
       <img :src="character.image" :alt="character.name" class="w-32 h-32 rounded-full">
       <div class="flex flex-col gap-4">
