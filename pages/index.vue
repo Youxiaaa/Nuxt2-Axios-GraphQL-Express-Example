@@ -20,6 +20,11 @@
           </div>
         </div>
       </li>
+      <select @change="chageCharactersPage(item)" v-model="charactersCurrentPage" class="text-center py-2">
+        <option :value="item" v-for="item in charactersPage.pages" :key="item">
+          第 {{ item }} 頁
+        </option>
+      </select>
     </ul>
 
     <ul v-else-if="selected === 'location'" class="mb-10 w-full mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-white rounded-lg p-4 shadow-md">
@@ -39,6 +44,11 @@
           </li>
         </ul>
       </li>
+      <ul class="flex justify-center items-center gap-4">
+        <li @click="changeLocationsPage(item)" v-for="item in locationsPage.pages" :key="item" class="cursor-pointer py-2 px-4 shadow-md" :class="{'bg-[#f1f1f1] ': locationsCurrentPage !== item, 'bg-pink-300 text-white': locationsCurrentPage === item}">
+          {{ item }}
+        </li>
+      </ul>
     </ul>
 
     <ul v-else class="mb-10 w-full mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-white rounded-lg p-4 shadow-md">
@@ -57,6 +67,11 @@
           </li>
         </ul>
       </li>
+      <ul class="flex justify-center items-center gap-4">
+        <li @click="changeEpisodesPage(item)" v-for="item in episodesPage.pages" :key="item" class="cursor-pointer py-2 px-4 shadow-md" :class="{'bg-[#f1f1f1] ': episodesCurrentPage !== item, 'bg-pink-300 text-white': episodesCurrentPage === item}">
+          <p>{{ item }}</p>
+        </li>
+      </ul>
     </ul>
 
   </section>
@@ -67,23 +82,30 @@ export default {
   name: 'IndexPage',
   async asyncData(context) {
     let characters = []
+    let charactersPage = {}
     const query = 'id name gender image location { name }'
     // 參數帶上需要回傳的key值
-    await context.$api.getCharacters(query)
+    await context.$api.getCharacters(1, query)
     .then((res) => {
       characters = res.data.data.characters.results
+      charactersPage = res.data.data.characters.info
     })
     .catch((err) => console.log(err))
-    return { characters }
+    return { characters, charactersPage }
   },
   data() {
     return {
       selected: 'character',
       isLoading: false,
+      charactersCurrentPage: 1,
       locations: [],
+      locationsCurrentPage: 1,
+      locationsPage: {},
       showResidents: 0,
       episodes: [],
-      showCharacter: 0
+      showCharacter: 0,
+      episodesPage: {},
+      episodesCurrentPage: 1
     }
   },
   methods: {
@@ -95,9 +117,10 @@ export default {
       if (this.selected === 'location') {
         if (this.locations.length === 0) {
           const data = 'id name type dimension residents {id name gender image}'
-          await this.api.getLocations(data)
+          await this.api.getLocations(1, data)
           .then((res) => {
             this.locations = res.data.data.locations.results
+            this.locationsPage = res.data.data.locations.info
             this.$nextTick(() => {
               this.isLoading = false
             })
@@ -113,9 +136,10 @@ export default {
       if (this.selected === 'episode') {
         if (this.episodes.length === 0) {
           const query = 'id name air_date episode characters { id name gender image }'
-          this.api.getEpisodes(query)
+          this.api.getEpisodes(this.episodesCurrentPage, query)
           .then((res) => {
             this.episodes = res.data.data.episodes.results
+            this.episodesPage = res.data.data.episodes.info
             this.$nextTick(() => {
               this.isLoading = false
             })
@@ -129,6 +153,57 @@ export default {
         }
       }
     },
+    async changeEpisodesPage(page) {
+      if (this.episodesCurrentPage === page) return 
+      this.episodesCurrentPage = page
+      this.isLoading = true
+      const query = 'id name air_date episode characters { id name gender image }'
+      this.api.getEpisodes(this.episodesCurrentPage, query)
+      .then((res) => {
+        this.episodes = res.data.data.episodes.results
+        this.episodesPage = res.data.data.episodes.info
+        this.$nextTick(() => {
+          this.isLoading = false
+        })
+      })
+      .catch((err) => {
+        this.isLoading = false
+        console.log(err)
+      })
+    },
+    async chageCharactersPage(page) {
+      if (this.charactersCurrentPage === page) return
+      this.isLoading = true
+      const query = 'id name gender image location { name }'
+      this.api.getCharacters(this.charactersCurrentPage, query)
+      .then((res) => {
+        this.characters = res.data.data.characters.results
+        this.$nextTick(() => {
+          this.isLoading = false
+        })
+      })
+      .catch((err) => {
+        this.isLoading = false
+        console.log(err)
+      })
+    },
+    async changeLocationsPage(page) {
+      if (this.locationsCurrentPage === page) return
+      this.locationsCurrentPage = page
+      this.isLoading = true
+      const query = 'id name type dimension residents {id name gender image}'
+      this.api.getLocations(this.locationsCurrentPage, query)
+      .then((res) => {
+        this.locations = res.data.data.locations.results
+        this.$nextTick(() => {
+          this.isLoading = false
+        })
+      })
+      .catch((err) => {
+        this.isLoading = false
+        console.log(err)
+      })
+    }
   }
 }
 </script>

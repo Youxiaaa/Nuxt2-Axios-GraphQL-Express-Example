@@ -1,9 +1,13 @@
 import api from './index'
 
-export const getEpisodes = async (data) => {
+export const getEpisodes = async (page, data) => {
   const query = `
     query getEpisodes {
-      episodes {
+      episodes (page: ${page}) {
+        info {
+          count
+          pages
+        }
         results {
           ${data}
         }

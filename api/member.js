@@ -1,9 +1,13 @@
 import api from './index'
 
-export const getCharacters = async (data) => {
+export const getCharacters = async (page, data) => {
   const query = `
     query getCharacters{
-      characters {
+      characters(page: ${page}) {
+        info {
+          count
+          pages
+        }
         results {
           ${data}
         }

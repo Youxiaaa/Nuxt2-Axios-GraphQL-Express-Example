@@ -1,9 +1,13 @@
 import api from './index'
 
-export const getLocations = async (data) => {
+export const getLocations = async (page, data) => {
   const query = `
     query getLocations {
-      locations {
+      locations(page: ${page}) {
+        info {
+          count
+          pages
+        }
         results {
           ${data}
         }
