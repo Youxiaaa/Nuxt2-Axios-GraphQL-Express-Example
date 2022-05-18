@@ -20,9 +20,9 @@
           </div>
         </div>
       </li>
-      <select @change="chageCharactersPage(item)" v-model="charactersCurrentPage" class="text-center py-2">
-        <option :value="item" v-for="item in charactersPage.pages" :key="item">
-          第 {{ item }} 頁
+      <select @change="chageCharactersPage()" v-model="charactersCurrentPage" class="text-center py-2">
+        <option :value="page" v-for="page in charactersPage.pages" :key="page">
+          第 {{ page }} 頁
         </option>
       </select>
     </ul>
@@ -44,11 +44,11 @@
           </li>
         </ul>
       </li>
-      <ul class="flex justify-center items-center gap-4">
-        <li @click="changeLocationsPage(item)" v-for="item in locationsPage.pages" :key="item" class="cursor-pointer py-2 px-4 shadow-md" :class="{'bg-[#f1f1f1] ': locationsCurrentPage !== item, 'bg-pink-300 text-white': locationsCurrentPage === item}">
-          {{ item }}
-        </li>
-      </ul>
+      <select @change="changeLocationsPage()" v-model="locationsCurrentPage" class="text-center py-2">
+        <option :value="page" v-for="page in locationsPage.pages" :key="page">
+          第 {{ page }} 頁
+        </option>
+      </select>
     </ul>
 
     <ul v-else class="mb-10 w-full mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-white rounded-lg p-4 shadow-md">
@@ -117,7 +117,7 @@ export default {
       if (this.selected === 'location') {
         if (this.locations.length === 0) {
           const data = 'id name type dimension residents {id name gender image}'
-          await this.api.getLocations(1, data)
+          await this.api.getLocations(0, data)
           .then((res) => {
             this.locations = res.data.data.locations.results
             this.locationsPage = res.data.data.locations.info
@@ -171,8 +171,8 @@ export default {
         console.log(err)
       })
     },
-    async chageCharactersPage(page) {
-      if (this.charactersCurrentPage === page) return
+    async chageCharactersPage() {
+      // if (this.charactersCurrentPage === page) return
       this.isLoading = true
       const query = 'id name gender image location { name }'
       await this.api.getCharacters(this.charactersCurrentPage, query)
@@ -187,9 +187,7 @@ export default {
         console.log(err)
       })
     },
-    async changeLocationsPage(page) {
-      if (this.locationsCurrentPage === page) return
-      this.locationsCurrentPage = page
+    async changeLocationsPage() {
       this.isLoading = true
       const query = 'id name type dimension residents {id name gender image}'
       await this.api.getLocations(this.locationsCurrentPage, query)
