@@ -1,4 +1,7 @@
 export default {
+  server: {
+    host: '0.0.0.0'
+  },
   head: {
     title: 'graphql-nuxt',
     htmlAttrs: {
@@ -18,6 +21,11 @@ export default {
   css: [
     '@/assets/css/main.css'
   ],
+
+  transition: {
+    name: 'fade',
+    mode: 'out-in'
+  },
 
   serverMiddleware: [
     '~/server/index.js'

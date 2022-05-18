@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const service = axios.create({
-  baseUrl: 'http:localhost:3000/api',
+  baseURL: 'https://rickandmortyapi.com/',
   headers: {
     'Content-Type': 'application/json'
   }
@@ -10,5 +10,9 @@ const service = axios.create({
 service.interceptors.request.use((config) => {
   return config;
 }, (error) => Promise.reject(error))
+
+service.interceptors.response.use((response) => {
+  return response
+})
 
 export default service

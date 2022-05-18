@@ -84,7 +84,6 @@ const root = {
   }
 }
 
-
 const app = express()
 
 app.use('/graphql', graphqlHTTP({
@@ -92,7 +91,6 @@ app.use('/graphql', graphqlHTTP({
   rootValue: root,
   graphiql: false
 }))
-
 
 module.exports = {
   path: 'api',

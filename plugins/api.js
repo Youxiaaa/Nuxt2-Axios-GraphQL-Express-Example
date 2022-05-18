@@ -1,17 +1,14 @@
 import Vue from 'vue'
 import {
-  getTodos,
-  addTodo,
-  completedTodo,
-  deletedTodo
-} from '~/api/todos'
+  getCharacters,
+  getCharacter
+
+} from '~/api/member'
 
 export default({}, inject) => {
   const api = {
-    getTodos,
-    addTodo,
-    completedTodo,
-    deletedTodo
+    getCharacters,
+    getCharacter
   }
   Vue.prototype.api = api
   inject('api', api)
