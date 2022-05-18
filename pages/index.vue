@@ -158,7 +158,7 @@ export default {
       this.episodesCurrentPage = page
       this.isLoading = true
       const query = 'id name air_date episode characters { id name gender image }'
-      this.api.getEpisodes(this.episodesCurrentPage, query)
+      await this.api.getEpisodes(this.episodesCurrentPage, query)
       .then((res) => {
         this.episodes = res.data.data.episodes.results
         this.episodesPage = res.data.data.episodes.info
@@ -175,7 +175,7 @@ export default {
       if (this.charactersCurrentPage === page) return
       this.isLoading = true
       const query = 'id name gender image location { name }'
-      this.api.getCharacters(this.charactersCurrentPage, query)
+      await this.api.getCharacters(this.charactersCurrentPage, query)
       .then((res) => {
         this.characters = res.data.data.characters.results
         this.$nextTick(() => {
@@ -192,7 +192,7 @@ export default {
       this.locationsCurrentPage = page
       this.isLoading = true
       const query = 'id name type dimension residents {id name gender image}'
-      this.api.getLocations(this.locationsCurrentPage, query)
+      await this.api.getLocations(this.locationsCurrentPage, query)
       .then((res) => {
         this.locations = res.data.data.locations.results
         this.$nextTick(() => {
