@@ -5,6 +5,10 @@
   - axios封裝
 - member.js
   - member相關 api 封裝
+- location.js
+  - location相關 api 封裝
+- episode.js
+  - episode相關 api 封裝
 
 ## plugins 資料夾
 - api.js
