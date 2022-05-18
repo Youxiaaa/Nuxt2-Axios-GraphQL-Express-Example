@@ -1,9 +1,5 @@
 import api from './index'
 
-const headers = {
-  'Content-Type': 'application/json'
-}
-
 export const getCharacters = async (data) => {
   const query = `
     query getCharacters{
